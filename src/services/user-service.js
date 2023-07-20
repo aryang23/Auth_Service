@@ -1,5 +1,6 @@
+const { JWT_KEY } = require('../config/serverConfig');
 const UserRepository = require('./../repository/user-repository');
-
+const bcrypt = require('bcrypt');
 class UserService {
     constructor() {
         this.userRepository = new UserRepository();
@@ -22,6 +23,25 @@ class UserService {
         } catch (error) {
             console.log("Something went wrong in service layer");
             throw {error};
+        }
+    }
+
+    createToken(user) {
+        try {
+            const result = jwt.sign(user, JWT_KEY, {expiresIn: '1d'});
+            return result;
+        } catch (error) {
+            console.log("Something went wrong in token creation");
+            throw {error};
+        }
+    }
+
+    checkPassword(userInputPassword, encryptedPassword) {
+        try {
+            return bcrypt.compareSync(userInputPassword, encryptedPassword);
+        } catch (error) {
+            console.log("Something went wrong in password comparison");
+            throw error;
         }
     }
 }
