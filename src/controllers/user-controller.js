@@ -17,7 +17,7 @@ const create = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong in controller layer");
         return res.status(500).json({
-            message: "Something went wrong",
+            message: "Something went wrong in controllers",
             success: false,
             data: {},
             err: error
@@ -38,7 +38,7 @@ const signIn = async (req, res) => {
     } catch (error) {
         console.log("Something went wrong in controller layer");
         return res.status(500).json({
-            message: "Something went wrong",
+            message: "Something went wrong in controllers",
             success: false,
             data: {},
             err: error
@@ -59,7 +59,27 @@ const isAuthenticated = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            message: "Something went wrong",
+            message: "Something went wrong in controllers",
+            data: {},
+            success: false,
+            err: error
+        })
+    }
+}
+
+const isAdmin = async (req, res) => {
+    try {
+        const response = await userService.isAdmin(req.body.id);
+        return res.status(200).json({
+            data: response,
+            err: {},
+            success: true,
+            message: "Successfully checked whether a user is admin or not"
+        })
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: "Something went wrong in controllers",
             data: {},
             success: false,
             err: error
@@ -70,5 +90,6 @@ const isAuthenticated = async (req, res) => {
 module.exports = {
     create,
     signIn,
-    isAuthenticated
+    isAuthenticated,
+    isAdmin
 }
